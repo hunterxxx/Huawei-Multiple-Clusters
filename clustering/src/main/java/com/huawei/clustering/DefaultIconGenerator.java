@@ -79,7 +79,7 @@ public class DefaultIconGenerator<T extends ClusterItem> implements IconGenerato
     }
 
     @NonNull
-    private BitmapDescriptor createClusterIcon(int clusterBucket) {
+    public BitmapDescriptor createClusterIcon(int clusterBucket) {
         @SuppressLint("InflateParams")
         TextView clusterIconView = (TextView) LayoutInflater.from(mContext)
                 .inflate(R.layout.map_cluster_icon, null);
