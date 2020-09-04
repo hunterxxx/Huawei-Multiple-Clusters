@@ -43,9 +43,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int[] CLUSTER_ICON_BUCKETS = {10, 20, 50, 100, 500, 1000, 5000, 10000, 20000, 50000, 100000};
 
-    private ShapeDrawable mColoredCircleBackground;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,69 +98,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 int bucket = getClusterIconBucket(cluster);
                 BitmapDescriptor descriptor = mClusterIcons.get(bucket);
                 if (descriptor == null) {
-                    //mColoredCircleBackground.getPaint().setColor(getColors(bucket));
-                    //descriptor = CustomIconGenerator.createClusterIcon(bucket);
-                    //descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                     CustomIconGenerator customIconGenerator = new CustomIconGenerator(getApplicationContext());
                     descriptor = customIconGenerator.createClusterIcon(bucket);
                     mClusterIcons.put(bucket, descriptor);
                 }
                 return descriptor;
             }
-/*
-            @NonNull
-            @Override
-            public BitmapDescriptor getClusterIcon(@NonNull Cluster<MyItem> cluster) {
-                TextView clusterIconView = (TextView) LayoutInflater.from(mContext)
-                        .inflate(com.huawei.clustering.R.layout.map_cluster_icon, null);
-                clusterIconView.setBackground(createClusterBackground());
-
-                clusterIconView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                clusterIconView.layout(0, 0, clusterIconView.getMeasuredWidth(),
-                        clusterIconView.getMeasuredHeight());
-
-                Bitmap iconBitmap = Bitmap.createBitmap(clusterIconView.getMeasuredWidth(),
-                        clusterIconView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
-                Canvas canvas = new Canvas(iconBitmap);
-                clusterIconView.draw(canvas);
-
-                return BitmapDescriptorFactory.fromBitmap(iconBitmap);
-            }
-*/
 
             @NonNull
             @Override
-            public BitmapDescriptor getClusterItemIcon(@NonNull MyItem clusterItem) {
+            public BitmapDescriptor getMarkerIcon(@NonNull MyItem clusterItem) {
                 //BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
                 BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                 return icon;
             }
-        });    }
+        });
+    }
 
     private int getClusterIconBucket(@NonNull Cluster<MyItem> cluster) {
         int itemCount = cluster.getItems().size();
         if (itemCount <= CLUSTER_ICON_BUCKETS[0]) {
             return itemCount;
         }
-
         for (int i = 0; i < CLUSTER_ICON_BUCKETS.length - 1; i++) {
             if (itemCount < CLUSTER_ICON_BUCKETS[i + 1]) {
                 return CLUSTER_ICON_BUCKETS[i];
             }
         }
-
         return CLUSTER_ICON_BUCKETS[CLUSTER_ICON_BUCKETS.length - 1];
-    }
-
-    protected int getColors(int clusterSize) {
-        final float hueRange = 220;
-        final float sizeRange = 300;
-        final float size = Math.min(clusterSize, sizeRange);
-        final float hue = (sizeRange - size) * (sizeRange - size) / (sizeRange * sizeRange) * hueRange;
-        return Color.HSVToColor(new float[]{
-                hue, 1f, .6f
-        });
     }
 
     private void clusterManagers(ClusterManager<MyItem> clusterManager) {

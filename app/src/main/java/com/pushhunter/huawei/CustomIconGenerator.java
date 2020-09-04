@@ -75,7 +75,7 @@ public class CustomIconGenerator<T extends ClusterItem> extends DefaultIconGener
 
     @NonNull
     @Override
-    public BitmapDescriptor getClusterItemIcon(@NonNull T clusterItem) {
+    public BitmapDescriptor getMarkerIcon(@NonNull T clusterItem) {
         if (mClusterItemIcon == null) {
             mClusterItemIcon = createClusterItemIcon();
         }
